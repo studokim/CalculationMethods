@@ -12,7 +12,7 @@ def print_cond(cond: float, name: str = "???"):
 
 
 def compute_diff(X: np.array, X_: np.array):
-    return np.linalg.norm(np.subtract(X, X_))
+    return np.linalg.norm(X - X_)
 
 
 def print_diff(X: np.array, X_: np.array, delta: float):

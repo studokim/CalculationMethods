@@ -42,7 +42,7 @@ def print_diff(X: np.array, X_: np.array, title_1: str = "решение", title
     diff = compute_diff(X, X_)
     print(f"X  = {format_vector(X)} — {title_1}")
     print(f"X_ = {format_vector(X_)} — {title_2}")
-    print(f"|X  - X_| = {diff}")
+    print(f"|X - X_| = {diff}")
 
 
 def build_random_vector(length: int):
