@@ -2,65 +2,59 @@
 
 <head>
     <title>Calculator</title>
-    <!-- {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"> -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'calculator/style.css' %}">
 </head>
 
 <body>
-    <div style="width: 80%">
-        <h1>Задача 1</h1>
+    <div>
+        <h1>Задача {{problem}}</h1>
 
-        {% if true %}
-        <table>
-            {% for row in matrix %}
-            <tr>
-                <td>{{row}}</td>
-                <td>hello</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        <p>No matrices are available.</p>
-        {% endif %}
+        <h2>Условие</h2>
+        {% for line in situation %}
+        <p>{{line}}</p>
+        {% endfor %}
 
-        <p>Выберите матрицу для исследования:
-            <select name="matrix" size="1">
-                <option selected="selected" value="hilbert_2">Гильберта 2 порядка</option>
-                <option value="hilbert_3">Гильберта 3 порядка</option>
-                <option value="hilbert_6">Гильберта 6 порядка</option>
-                <option value="pakulina_2">Пакулиной 2 порядка</option>
-                <option value="pakulina_3">Пакулиной 3 порядка</option>
-                <option value="tridiag_5">трёхдиагональная 5 порядка</option>
-                <option value="tridiag_7">трёхдиагональная 7 порядка</option>
+        <h2>Решение</h2>
+
+        <p>Выберите матрицу для исследования:</p>
+        <form action="." method="get">
+            <select name="matrices" size="1">
+                <option value="placeholder" selected="selected" disabled hidden>выбрать</option>
+                {% for key, value in matrices_available %}
+                <option value="{{key}}">{{value}}</option>
+                {% endfor %}
             </select>
-        </p>
+            <input type="submit" value="Готово!">
+        </form>
 
-        <table border="1" cellpadding="0" cellspacing="0" style="width:150px">
-            <caption style="border: 1px black"><strong>Table title</strong></caption>
+        {% if matrix is not None %}
+        <table>
+            <caption><strong>Выбранная матрица</strong></caption>
             <tbody>
+                {% for row in matrix %}
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    {% for col in row %}
+                    <td>{{col}}</td>
+                    {% endfor %}
                 </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p>Матрица не найдена.</p>
+        {% endif %}
 
-        <p>Введите &epsilon;:
+        <form action="." method="get">
+            <label for="epsilon">Введите &epsilon;:</label>
             <input name="epsilon" type="text" value="0.001" />
-        </p>
-        <input name="solve" type="submit" value="Решить!" />
+            <input type="submit" value="Решить!" />
+        </form>
+
+        <h2>Ответ</h2>
+
     </div>
+
 </body>
 
 </html>
