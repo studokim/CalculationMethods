@@ -23,6 +23,8 @@ pip install -e .
 
 ### Launching the web-app
 
+Assign any value to `SECRET_KEY` in the `webapp/settings.py`.
+
 ```bash
 cd src/webapp
 python manage.py runserver <ip>:<port>

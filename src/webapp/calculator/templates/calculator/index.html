@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <title>Calculator</title>
+    <!-- {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}"> -->
+</head>
+
+<body>
+    <div style="width: 80%">
+        <h1>Задача 1</h1>
+
+        {% if true %}
+        <table>
+            {% for row in matrix %}
+            <tr>
+                <td>{{row}}</td>
+                <td>hello</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No matrices are available.</p>
+        {% endif %}
+
+        <p>Выберите матрицу для исследования:
+            <select name="matrix" size="1">
+                <option selected="selected" value="hilbert_2">Гильберта 2 порядка</option>
+                <option value="hilbert_3">Гильберта 3 порядка</option>
+                <option value="hilbert_6">Гильберта 6 порядка</option>
+                <option value="pakulina_2">Пакулиной 2 порядка</option>
+                <option value="pakulina_3">Пакулиной 3 порядка</option>
+                <option value="tridiag_5">трёхдиагональная 5 порядка</option>
+                <option value="tridiag_7">трёхдиагональная 7 порядка</option>
+            </select>
+        </p>
+
+        <table border="1" cellpadding="0" cellspacing="0" style="width:150px">
+            <caption style="border: 1px black"><strong>Table title</strong></caption>
+            <tbody>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Введите &epsilon;:
+            <input name="epsilon" type="text" value="0.001" />
+        </p>
+        <input name="solve" type="submit" value="Решить!" />
+    </div>
+</body>
+
+</html>
