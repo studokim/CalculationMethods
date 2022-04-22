@@ -1,5 +1,6 @@
 from random import choice
 import numpy as np
+from copy import deepcopy
 
 k_bad_cond = 10**4
 
@@ -61,7 +62,7 @@ def sign():
 
 
 def build_variated(A: np.array, delta: float):
-    A_ = A
+    A_ = deepcopy(A)
     for row in range(len(A)):
         for col in range(len(A)):
             if (probe()):

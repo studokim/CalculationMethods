@@ -1,3 +1,4 @@
+import json
 from src.tasks.common_data import SOLE
 from src.tasks.common_lib import print_task, print_test
 from src.tasks.task01_lib import *
@@ -15,7 +16,27 @@ def situation():
 # Статья, в которой предлагается метод подсчёта углового числа обусловленности: https://elibrary.ru/download/elibrary_15524850_60661752.pdf
 
 
-def test(A: np.array, b: np.array):
+def calc_answer(A: np.array, b: np.array, delta: float = 10**(-4)):
+    cond_s = compute_cond_s(A)
+    cond_v = compute_cond_v(A)
+    cond_a = compute_cond_a(A)
+    A_ = build_variated(A, delta)
+    X = np.linalg.solve(A, b)
+    X_ = np.linalg.solve(A_, b)
+    answer = {
+        "Спектральное число обусловленности": cond_s,
+        "Объёмное число обусловленности": cond_v,
+        "Угловое число обусловленности": cond_a,
+        "Задача плохо обусловлена?": int(cond_s > k_bad_cond or cond_v > k_bad_cond or cond_a > k_bad_cond),
+        "δ": delta,
+        "X": X.tolist(),
+        "X после вариации": X_.tolist(),
+        "|X - X_var|": compute_diff(X, X_),
+    }
+    return json.dumps(answer, ensure_ascii=False)
+
+
+def print_answer(A: np.array, b: np.array):
     print_cond(compute_cond_s(A), "spectre")
     print_cond(compute_cond_v(A), "volume")
     print_cond(compute_cond_a(A), "angle")
@@ -31,33 +52,33 @@ def main():
 
     print_test("Гильберта 3-го порядка")
     A, b = SOLE.hilbert(3)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 6-го порядка")
     A, b = SOLE.hilbert(6)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 10-го порядка")
     A, b = SOLE.hilbert(10)
-    test(A, b)
+    print_answer(A, b)
 
     # матрица из Пакулиной, стр. 90, вар. 1
     print_test()
     A, b = SOLE.pakulina(2)
-    test(A, b)
+    print_answer(A, b)
 
     # матрица из Пакулиной, стр. 94, вар. 1
     print_test()
     A, b = SOLE.pakulina(3)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Трёхдиагональная")
     A, b = SOLE.tridiag(5)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Трёхдиагональная")
     A, b = SOLE.tridiag(7)
-    test(A, b)
+    print_answer(A, b)
 
 
 if __name__ == '__main__':

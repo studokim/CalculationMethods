@@ -5,25 +5,29 @@ import src.tasks.task02 as task02
 import src.tasks.task04 as task04
 
 
+def get_task_by_number(n: int):
+    match n:
+        case 1:
+            return task01
+        case 2:
+            return task02
+        case 4:
+            return task04
+        case _:
+            return None
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("problem", type=int,
                         help="number of problem to solve")
     args = parser.parse_args()
     problem = args.problem
-    match problem:
-        case 1:
-            task01.main()
-            return 0
-        case 2:
-            task02.main()
-            return 0
-        case 4:
-            task04.main()
-            return 0
-        case _:
-            print("No such problem! Only 1, 2 and 4 are available.")
-            exit(1)
+    task = get_task_by_number(problem)
+    if task is None:
+        print("No such problem! Only 1, 2 and 4 are available.")
+        exit(1)
+    task.main()
 
 
 if __name__ == '__main__':

@@ -3,11 +3,11 @@ from src.tasks.task01_lib import build_hilbert
 
 
 class SOLE:
-    def get_matrix_by_name(name: str) -> callable:
+    def get_SOLE_by_name(name: str) -> callable:
         method_name = name.split("_")[0]
         n = int(name.split("_")[1])
         method = getattr(SOLE, method_name)
-        return method(n)[0]
+        return method(n)
 
     def get_available_matrices_names() -> dict:
         return {

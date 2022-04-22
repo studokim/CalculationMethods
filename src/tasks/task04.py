@@ -1,5 +1,6 @@
 from src.tasks.common_lib import *
 from src.tasks.common_data import SOLE
+from src.tasks.task01_lib import compute_diff
 from src.tasks.task04_lib import *
 from src.tasks.task02_lib import print_diff
 
@@ -21,7 +22,19 @@ def situation():
             "Реализация метода релаксации с тестированием на больших разреженных матрицах дает дополнительный “плюсик”."]
 
 
-def test(A: np.array, b: np.array):
+def calc_answer(A: np.array, b: np.array, epsilon: float = 10**(-10)):
+    X = solve_simple(A, b, epsilon, verbosity=1)
+    X_ = np.linalg.solve(A, b)
+    diff = compute_diff(X, X_)
+    answer = {
+        "X": X.tolist(),
+        "X, полученный библиотечной функцией": X_.tolist(),
+        "|X - X_bib|": diff,
+    }
+    return json.dumps(answer, ensure_ascii=False)
+
+
+def print_answer(A: np.array, b: np.array):
     epsilon = 10**(-10)
     X = solve_simple(A, b, epsilon, verbosity=1)
     X_ = np.linalg.solve(A, b)
@@ -29,30 +42,29 @@ def test(A: np.array, b: np.array):
 
 
 def main():
-
     print_task(4)
 
     print_test("Гильберта 2-го порядка")
     A, b = SOLE.hilbert(2)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 3-го порядка")
     A, b = SOLE.hilbert(3)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 10-го порядка")
     A, b = SOLE.hilbert(10)
-    test(A, b)
+    print_answer(A, b)
 
     # матрица из Пакулиной, стр. 90, вар. 1
     print_test()
     A, b = SOLE.pakulina(2)
-    test(A, b)
+    print_answer(A, b)
 
     # матрица из Пакулиной, стр. 94, вар. 1
     print_test()
     A, b = SOLE.pakulina(3)
-    test(A, b)
+    print_answer(A, b)
 
 
 if __name__ == '__main__':

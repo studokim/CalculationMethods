@@ -17,15 +17,21 @@
 
         <h2>Решение</h2>
 
-        <p>Выберите матрицу для исследования:</p>
         <form action="." method="get">
-            <select name="matrices" size="1">
-                <option value="placeholder" selected="selected" disabled hidden>выбрать</option>
-                {% for key, value in matrices_available %}
-                <option value="{{key}}">{{value}}</option>
-                {% endfor %}
-            </select>
-            <input type="submit" value="Готово!">
+            <p>
+                <label for="matrix">Выберите матрицу для исследования:</label>
+                <select name="matrix" size="1">
+                    <option value="placeholder" selected="selected" disabled hidden>выбрать</option>
+                    {% for key, value in matrices_available %}
+                    <option value="{{key}}">{{value}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="epsilon">Введите &epsilon;:</label>
+                <input name="epsilon" type="text" value="0.001" />
+            </p>
+            <input type="submit" value="Решить!" />
         </form>
 
         {% if matrix is not None %}
@@ -45,13 +51,22 @@
         <p>Матрица не найдена.</p>
         {% endif %}
 
-        <form action="." method="get">
-            <label for="epsilon">Введите &epsilon;:</label>
-            <input name="epsilon" type="text" value="0.001" />
-            <input type="submit" value="Решить!" />
-        </form>
-
         <h2>Ответ</h2>
+
+        {% if answer is not None %}
+        <table>
+            <tbody>
+                {% for key, value in answer %}
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{{value}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Не удалось получить ответ.</p>
+        {% endif %}
 
     </div>
 

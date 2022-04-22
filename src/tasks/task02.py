@@ -24,7 +24,37 @@ def situation():
             "Проверить результат на [другом] случайном векторе x0."]
 
 
-def test(A: np.array, b: np.array):
+def calc_answer(A: np.array, b: np.array):
+    L, U = build_LU(A)
+    cond = compute_cond_s(A)
+    X = solve(A, b)
+    X_bib = np.linalg.solve(A, b)
+    X_ = None
+    X0 = None
+    X_test = None
+    diff_regularized = None
+    if (cond > k_bad_cond):
+        X_ = solve_regularizing(A, b)
+        X0 = build_random_vector(len(A))
+        X_test = solve_regularizing(A, b, X0)
+        diff_regularized = compute_diff(X_, X_test)
+    answer = {
+        "Число обусловленности матрицы A": cond,
+        "Число обусловленности матрицы L": compute_cond_s(L),
+        "Число обусловленности матрицы U": compute_cond_s(U),
+        "Задача плохо обусловлена?": int(cond > k_bad_cond),
+        "X, полученный библиотечной функцией": X_bib.tolist(),
+        "X": X.tolist(),
+        "|X - X_bib|": compute_diff(X, X_bib),
+        "X, полученный методом регуляризации, ": X_.tolist(),
+        "X0": X0.tolist(),
+        "X проверочный": X_test.tolist(),
+        "|X_reg - X_prov|": diff_regularized,
+    }
+    return json.dumps(answer, ensure_ascii=False)
+
+
+def print_answer(A: np.array, b: np.array):
     L, U = build_LU(A)
     cond = compute_cond_s(A)
     print_cond(cond, "A:")
@@ -47,19 +77,19 @@ def main():
 
     print_test("Гильберта 3-го порядка")
     A, b = SOLE.hilbert(3)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 10-го порядка")
     A, b = SOLE.hilbert(10)
-    test(A, b)
+    print_answer(A, b)
 
     print_test("Гильберта 20-го порядка")
     A, b = SOLE.hilbert(20)
-    test(A, b)
+    print_answer(A, b)
 
     print_test()
     A, b = SOLE.pakulina(3)
-    test(A, b)
+    print_answer(A, b)
 
 
 if __name__ == '__main__':
