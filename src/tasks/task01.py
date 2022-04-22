@@ -46,20 +46,20 @@ def main():
 
     # матрица из Пакулиной, стр. 90, вар. 1
     print_test()
-    A, b = SOLE.pakulina_2()
+    A, b = SOLE.pakulina(2)
     test(A, b)
 
     # матрица из Пакулиной, стр. 94, вар. 1
     print_test()
-    A, b = SOLE.pakulina_3()
+    A, b = SOLE.pakulina(3)
     test(A, b)
 
     print_test("Трёхдиагональная")
-    A, b = SOLE.tridiag_5()
+    A, b = SOLE.tridiag(5)
     test(A, b)
 
     print_test("Трёхдиагональная")
-    A, b = SOLE.tridiag_5()
+    A, b = SOLE.tridiag(7)
     test(A, b)
 
 

@@ -60,7 +60,7 @@ def main():
     test(A, b)
 
     print_test()
-    A, b = SOLE.pakulina_3()
+    A, b = SOLE.pakulina(3)
     test(A, b)
 
 
