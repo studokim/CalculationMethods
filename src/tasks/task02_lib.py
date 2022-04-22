@@ -1,4 +1,4 @@
-from task01_lib import compute_cond_v, k_bad_cond, compute_diff
+from .task01_lib import compute_cond_v, k_bad_cond, compute_diff
 import numpy as np
 
 

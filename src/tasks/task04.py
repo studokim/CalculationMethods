@@ -16,10 +16,10 @@
 # симметричных с диагональным преобладанием разреженных матрицах большого порядка(больше 200).
 # Реализация метода релаксации с тестированием на больших разреженных матрицах дает дополнительный “плюсик”.
 
-from common_lib import *
-from task04_lib import *
-from task02_lib import print_diff
-from task01_lib import build_hilbert
+from .common_lib import *
+from .task04_lib import *
+from .task02_lib import print_diff
+from .task01_lib import build_hilbert
 
 
 def test(A: np.array, b: np.array):

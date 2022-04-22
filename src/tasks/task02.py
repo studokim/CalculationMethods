@@ -20,9 +20,10 @@
 #
 # Проверить результат на [другом] случайном векторе x 0 .
 
-from common_lib import *
-from task01_lib import build_hilbert, compute_cond_s, print_cond
-from task02_lib import *
+from .common_lib import *
+from .common_data import SOLE
+from .task01_lib import compute_cond_s, print_cond
+from .task02_lib import *
 
 
 def test(A: np.array, b: np.array):
@@ -45,24 +46,18 @@ def test(A: np.array, b: np.array):
 
 print_task(2)
 
-A = build_hilbert(3)
-b = [1 for i in range(3)]
 print_test("Гильберта 3-го порядка")
+A, b = SOLE.hilbert(3)
 test(A, b)
 
-A = build_hilbert(10)
-b = [1 for i in range(10)]
 print_test("Гильберта 10-го порядка")
+A, b = SOLE.hilbert(10)
 test(A, b)
 
-A = build_hilbert(20)
-b = [1 for i in range(20)]
 print_test("Гильберта 20-го порядка")
+A, b = SOLE.hilbert(20)
 test(A, b)
 
-A = np.array([[3.278164, 1.046583, -1.378574],
-              [1.046583, 2.975937, 0.934251],
-              [-1.378574, 0.934251, 4.836173]])
-b = np.array([-0.527466, 2.526877, 5.165441])
 print_test()
+A, b = SOLE.pakulina_3()
 test(A, b)
