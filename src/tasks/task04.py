@@ -16,10 +16,10 @@
 # симметричных с диагональным преобладанием разреженных матрицах большого порядка(больше 200).
 # Реализация метода релаксации с тестированием на больших разреженных матрицах дает дополнительный “плюсик”.
 
-from .common_lib import *
-from .task04_lib import *
-from .task02_lib import print_diff
-from .task01_lib import build_hilbert
+from src.tasks.common_lib import *
+from src.tasks.common_data import SOLE
+from src.tasks.task04_lib import *
+from src.tasks.task02_lib import print_diff
 
 
 def test(A: np.array, b: np.array):
@@ -29,37 +29,32 @@ def test(A: np.array, b: np.array):
     print_diff(X, X_)
 
 
-print_task(4)
+def main():
 
-# матрица Гильберта
-A = build_hilbert(2)
-b = np.array([1 for i in range(2)])
-print_test("Гильберта 2-го порядка")
-test(A, b)
+    print_task(4)
 
-# матрица Гильберта
-A = build_hilbert(3)
-b = np.array([1 for i in range(3)])
-print_test("Гильберта 3-го порядка")
-test(A, b)
+    print_test("Гильберта 2-го порядка")
+    A, b = SOLE.hilbert(2)
+    test(A, b)
 
-# матрица Гильберта
-A = build_hilbert(10)
-b = np.array([1 for i in range(10)])
-print_test("Гильберта 10-го порядка")
-test(A, b)
+    print_test("Гильберта 3-го порядка")
+    A, b = SOLE.hilbert(3)
+    test(A, b)
 
-# матрица из Пакулиной, стр. 90, вар. 1
-A = np.array([[-400.60, 199.80],
-              [1198.80, -600.40]])
-b = np.array([200, -600])
-print_test()
-test(A, b)
+    print_test("Гильберта 10-го порядка")
+    A, b = SOLE.hilbert(10)
+    test(A, b)
 
-# матрица из Пакулиной, стр. 94, вар. 1
-A = np.array([[3.278164, 1.046583, -1.378574],
-              [1.046583, 2.975937, 0.934251],
-              [-1.378574, 0.934251, 4.836173]])
-b = np.array([-0.527466, 2.526877, 5.165441])
-print_test()
-test(A, b)
+    # матрица из Пакулиной, стр. 90, вар. 1
+    print_test()
+    A, b = SOLE.pakulina_2()
+    test(A, b)
+
+    # матрица из Пакулиной, стр. 94, вар. 1
+    print_test()
+    A, b = SOLE.pakulina_3()
+    test(A, b)
+
+
+if __name__ == '__main__':
+    main()

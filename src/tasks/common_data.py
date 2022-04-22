@@ -1,5 +1,5 @@
 import numpy as np
-from .task01_lib import build_hilbert
+from src.tasks.task01_lib import build_hilbert
 
 
 class SOLE:

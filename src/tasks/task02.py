@@ -20,10 +20,10 @@
 #
 # Проверить результат на [другом] случайном векторе x 0 .
 
-from .common_lib import *
-from .common_data import SOLE
-from .task01_lib import compute_cond_s, print_cond
-from .task02_lib import *
+from src.tasks.common_lib import *
+from src.tasks.common_data import SOLE
+from src.tasks.task01_lib import compute_cond_s, print_cond
+from src.tasks.task02_lib import *
 
 
 def test(A: np.array, b: np.array):
@@ -44,20 +44,25 @@ def test(A: np.array, b: np.array):
                    "проверочное решение")
 
 
-print_task(2)
+def main():
+    print_task(2)
 
-print_test("Гильберта 3-го порядка")
-A, b = SOLE.hilbert(3)
-test(A, b)
+    print_test("Гильберта 3-го порядка")
+    A, b = SOLE.hilbert(3)
+    test(A, b)
 
-print_test("Гильберта 10-го порядка")
-A, b = SOLE.hilbert(10)
-test(A, b)
+    print_test("Гильберта 10-го порядка")
+    A, b = SOLE.hilbert(10)
+    test(A, b)
 
-print_test("Гильберта 20-го порядка")
-A, b = SOLE.hilbert(20)
-test(A, b)
+    print_test("Гильберта 20-го порядка")
+    A, b = SOLE.hilbert(20)
+    test(A, b)
 
-print_test()
-A, b = SOLE.pakulina_3()
-test(A, b)
+    print_test()
+    A, b = SOLE.pakulina_3()
+    test(A, b)
+
+
+if __name__ == '__main__':
+    main()
