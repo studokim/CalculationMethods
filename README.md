@@ -18,6 +18,7 @@ git clone https://github.com/studokim/CalculationMethods.git
 cd CalculationMethods
 python -m venv venv
 source ./venv/bin/activate
+pip install django numpy
 pip install -e .
 ```
 
@@ -30,4 +31,4 @@ cd src/webapp
 python manage.py runserver <ip>:<port>
 ```
 
-Then navigate in browser to `http://<ip>:<port>/calculator/`.
+Then navigate in browser to `http://<ip>:<port>/`.
