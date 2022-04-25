@@ -31,9 +31,10 @@ def calc_answer(params: dict):
     X_ = np.linalg.solve(A, b)
     diff = compute_diff(X, X_)
     answer = {
-        "X": X.tolist(),
-        "X, полученный библиотечной функцией": X_.tolist(),
-        "|X - X_bib|": diff,
+        # NaNs are unexpected characters when dumping to json
+        "X": str(X.tolist()),
+        "X, полученный библиотечной функцией": str(X_.tolist()),
+        "|X - X_bib|": str(diff),
         "comment": comment,
     }
     return json.dumps(answer, ensure_ascii=False)
