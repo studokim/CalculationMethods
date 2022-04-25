@@ -132,6 +132,7 @@ hr {
 }
 
 table {
+    font-size: smaller;
     width: fit-content;
     max-width: 100%;
     margin-left: auto;
