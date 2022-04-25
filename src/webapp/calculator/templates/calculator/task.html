@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Calculator</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'calculator/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Задача {{task_id}}</h1>
+        <p><a href="/">Вернуться к списку.</a></p>
+
+        <h2>Условие</h2>
+        {% include "calculator/situation.html" %}
+
+        <h2>Решение</h2>
+        <form id="formx" action="./{{task_id}}/params" method="post">
+            {{ form.as_p }}
+            <input type="submit" value="Решить!">
+        </form>
+        {% block javascript %}
+        <script type="text/javascript">
+            $("#formx").submit(function (e) {
+                e.preventDefault(); // avoid executing the actual submit of the form.
+                var form = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        var params = JSON.stringify(response);
+                        $.ajax({
+                            type: "POST",
+                            url: "./{{task_id}}/rendered_params",
+                            data: params,
+                            contentType: 'application/json',
+                            success: function (response) {
+                                $("#params").html(response);
+                            },
+                            error: function (response) {
+                                $("#params").html("<p>Не удалось показать параметры.</p>");
+                            }
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "./{{task_id}}/answer",
+                            data: params,
+                            contentType: 'application/json',
+                            success: function (response) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "./{{task_id}}/rendered_answer",
+                                    data: JSON.stringify(response),
+                                    contentType: 'application/json',
+                                    success: function (response) {
+                                        $("#answer").html(response);
+                                    }
+                                });
+                            },
+                            error: function (response) {
+                                $("#answer").html("<p>Не удалось получить ответ.</p>");
+                            }
+                        });
+                    },
+                    error: function (response) {
+                        $("#params").html("<p>Не удалось считать параметры.</p>");
+                    }
+                });
+
+            });
+        </script>
+        {% endblock javascript %}
+        <div id="params"></div>
+
+        <h2>Ответ</h2>
+        <div id="answer"></div>
+    </div>
+
+</body>
+
+</html>

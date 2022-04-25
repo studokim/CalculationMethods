@@ -1,3 +1,4 @@
+import json
 from src.tasks.common_lib import *
 from src.tasks.common_data import SOLE
 from src.tasks.task01_lib import compute_cond_s, print_cond
@@ -24,7 +25,9 @@ def situation():
             "Проверить результат на [другом] случайном векторе x0."]
 
 
-def calc_answer(A: np.array, b: np.array):
+def calc_answer(params: dict):
+    A = np.array(params['A'])
+    b = np.array(params['b'])
     L, U = build_LU(A)
     cond = compute_cond_s(A)
     X = solve(A, b)
@@ -38,6 +41,9 @@ def calc_answer(A: np.array, b: np.array):
         X0 = build_random_vector(len(A))
         X_test = solve_regularizing(A, b, X0)
         diff_regularized = compute_diff(X_, X_test)
+        X_ = X_.tolist()
+        X0 = X0.tolist()
+        X_test = X_test.tolist()
     answer = {
         "Число обусловленности матрицы A": cond,
         "Число обусловленности матрицы L": compute_cond_s(L),
@@ -46,9 +52,9 @@ def calc_answer(A: np.array, b: np.array):
         "X, полученный библиотечной функцией": X_bib.tolist(),
         "X": X.tolist(),
         "|X - X_bib|": compute_diff(X, X_bib),
-        "X, полученный методом регуляризации, ": X_.tolist(),
-        "X0": X0.tolist(),
-        "X проверочный": X_test.tolist(),
+        "X, полученный методом регуляризации": X_,
+        "X0": X0,
+        "X проверочный": X_test,
         "|X_reg - X_prov|": diff_regularized,
     }
     return json.dumps(answer, ensure_ascii=False)

@@ -27,7 +27,7 @@ def build_beta(A: np.array, b: np.array):
     return np.array([b[i] / A[i][i] for i in range(n)])
 
 
-def solve_simple(A: np.array, b: np.array, epsilon: float, x0: np.array = None, verbosity: int = 0):
+def solve_simple(A: np.array, b: np.array, epsilon: float, x0: np.array = None, verbosity: int = 0) -> tuple[np.array, str]:
     alpha = build_alpha(A)
     beta = build_beta(A, b)
     if x0 is None:
@@ -41,11 +41,11 @@ def solve_simple(A: np.array, b: np.array, epsilon: float, x0: np.array = None, 
         x_k = build_x_k(alpha, beta, x_k_minus_1)
         error = compute_aposterior(alpha, x_k, x_k_minus_1)
         iter += 1
+    if any(np.isnan(x_k)):
+        comment = f"Невозможно найти решение; ‖alpha‖ = {np.linalg.norm(alpha)}"
+    else:
+        comment = f"Решение найдено для ε = {epsilon} за {iter} итераций." + \
+            f"Апостериорная погрешность = {error}"
     if verbosity >= 1:
-        if any(np.isnan(x_k)):
-            print(
-                f"Невозможно найти решение; ‖alpha‖ = {np.linalg.norm(alpha)}")
-        else:
-            print(f"Решение найдено для ε = {epsilon} за {iter} итераций.")
-            print(f"Апостериорная погрешность = {error}")
-    return x_k
+        print(comment)
+    return x_k, comment

@@ -5,7 +5,12 @@ from . import views
 app_name = 'calculator'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('matrix', views.matrix, name='matrix'),
-    path('answer', views.answer, name='answer'),
-    # path('<int:question_id>/vote/', views.vote, name='vote'),
+    path('task/<int:task_id>', views.task, name='task'),
+    path('task/<int:task_id>/params', views.params, name='params'),
+    path('task/<int:task_id>/rendered_params',
+         views.rendered_params, name='rendered_params'),
+    path('task/<int:task_id>/answer', views.answer, name='answer'),
+    path('task/<int:task_id>/rendered_answer',
+         views.rendered_answer, name='rendered_answer'),
+
 ]

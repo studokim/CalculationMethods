@@ -1,0 +1,7 @@
+{% if situation is not None %}
+{% for line in situation %}
+<p>{{line}}</p>
+{% endfor %}
+{% else %}
+<p>Не удалось получить условие.</p>
+{% endif %}

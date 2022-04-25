@@ -1,3 +1,4 @@
+import json
 from src.tasks.common_lib import *
 from src.tasks.common_data import SOLE
 from src.tasks.task01_lib import compute_diff
@@ -22,21 +23,25 @@ def situation():
             "Реализация метода релаксации с тестированием на больших разреженных матрицах дает дополнительный “плюсик”."]
 
 
-def calc_answer(A: np.array, b: np.array, epsilon: float = 10**(-10)):
-    X = solve_simple(A, b, epsilon, verbosity=1)
+def calc_answer(params: dict):
+    A = np.array(params['A'])
+    b = np.array(params['b'])
+    epsilon = float(params['epsilon'])
+    X, comment = solve_simple(A, b, epsilon, verbosity=1)
     X_ = np.linalg.solve(A, b)
     diff = compute_diff(X, X_)
     answer = {
         "X": X.tolist(),
         "X, полученный библиотечной функцией": X_.tolist(),
         "|X - X_bib|": diff,
+        "comment": comment,
     }
     return json.dumps(answer, ensure_ascii=False)
 
 
 def print_answer(A: np.array, b: np.array):
     epsilon = 10**(-10)
-    X = solve_simple(A, b, epsilon, verbosity=1)
+    X = solve_simple(A, b, epsilon, verbosity=1)[0]
     X_ = np.linalg.solve(A, b)
     print_diff(X, X_)
 

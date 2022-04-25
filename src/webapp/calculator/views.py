@@ -1,48 +1,59 @@
 import json
-from urllib import response
 from django.shortcuts import render
-from django.http import JsonResponse
-import numpy as np
+from django.http import JsonResponse, HttpRequest
 
 from src.tasks import common_data
 from src.tasks.main import get_task_by_number
+from .forms import get_form_by_number, get_params_by_number
 
 
 def index(request):
-    def get_matrix_from_json(response: JsonResponse):
-        return json.loads(response.content)['A']
-    problem_number = 1
-    task = get_task_by_number(problem_number)
     context = {
-        'problem': problem_number,
-        'situation': task.situation(),
-        'matrices_available': common_data.SOLE.get_available_matrices_names().items(),
-        'matrix': get_matrix_from_json(matrix(request)),
-        'answer': json.loads(answer(request).content).items(),
+        'solved_tasks': common_data.get_solved_tasks().items(),
+        'unsolved_tasks': common_data.get_unsolved_tasks().items(),
     }
     return render(request, 'calculator/index.html', context)
 
 
-def matrix(request):
-    matrix_name = request.GET.get('matrix')
-    if matrix_name is not None:
-        A, b = common_data.SOLE.get_SOLE_by_name(matrix_name)
+def task(request, task_id):
+    if request.method == 'POST':
+        form = get_form_by_number(task_id)(request.POST)
     else:
-        A, b = common_data.SOLE.hilbert(2)
-    A_lists = A.tolist()
-    b_lists = b.tolist()
-    return JsonResponse({'A': A_lists, 'b': b_lists})
+        form = get_form_by_number(task_id)
+    context = {
+        'task_id': task_id,
+        'situation': get_task_by_number(task_id).situation(),
+        'form': form,
+        'params_template': f'calculator/params/{task_id}.html',
+    }
+    return render(request, 'calculator/task.html', context)
 
 
-def answer(request):
-    def to_np(response: JsonResponse, field_name: str):
-        return np.array(json.loads(response.content)[field_name])
-    problem_number = request.GET.get('problem')
-    if problem_number is not None:
-        problem_number = int(problem_number)
-    else:
-        problem_number = 1
-    response = matrix(request)
-    answer = get_task_by_number(problem_number).calc_answer(
-        to_np(response, 'A'), to_np(response, 'b'))
-    return JsonResponse(json.loads(answer))
+def params(request, task_id):
+    try:
+        form = get_form_by_number(task_id)(request.POST)
+        parsed_params = get_params_by_number(task_id, form)
+        return JsonResponse(parsed_params)
+    except:
+        return JsonResponse({'error': 'form invalid'})
+
+
+def rendered_params(request, task_id):
+    context = json.loads(request.body)
+    return render(request, f'calculator/params/{task_id}.html', context)
+
+
+def answer(request: HttpRequest, task_id):
+    try:
+        parsed_params = json.loads(request.body)
+        answer = get_task_by_number(task_id).calc_answer(parsed_params)
+        return JsonResponse(json.loads(answer))
+    except:
+        return JsonResponse({'error': 'params invalid'})
+
+
+def rendered_answer(request, task_id):
+    context = {
+        'answer': json.loads(request.body).items()
+    }
+    return render(request, f'calculator/answer.html', context)

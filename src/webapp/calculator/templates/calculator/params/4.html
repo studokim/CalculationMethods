@@ -1,0 +1,33 @@
+<style>
+    #table_A {
+        float: left;
+        width: 90%;
+    }
+
+    #table_b {
+        float: right;
+        width: 10%;
+    }
+</style>
+<table id="table_A">
+    <caption><strong>A</strong></caption>
+    <tbody>
+        {% for row in A %}
+        <tr>
+            {% for col in row %}
+            <td>{{col}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table>
+    <caption><strong>b</strong></caption>
+    <tbody>
+        {% for row in b %}
+        <tr>
+            <td>{{row}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
