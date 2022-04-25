@@ -19,13 +19,13 @@ def get_task_by_number(n: int):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("problem", type=int,
-                        help="number of problem to solve")
+    parser.add_argument("task", type=int,
+                        help="number of task to solve")
     args = parser.parse_args()
-    problem = args.problem
-    task = get_task_by_number(problem)
+    task = args.task
+    task = get_task_by_number(task)
     if task is None:
-        print("No such problem! Only 1, 2 and 4 are available.")
+        print("No such task! Only 1, 2 and 4 are available.")
         exit(1)
     task.main()
 
