@@ -1,7 +1,7 @@
 /*MOST OF THE FOLLOWING IS FROM PANDOC's DEFAULTS*/
 html {
     line-height: 1.5;
-    font-family: Georgia, serif;
+    font-family: 'IBM Plex Sans';
     font-size: 20px;
     color: #1a1a1a;
     background-color: #fdfdfd;
@@ -59,6 +59,12 @@ a {
 
 a:visited {
     color: #1a1a1a;
+}
+
+input,
+select {
+    font-family: 'IBM Plex Sans';
+    font-weight: bold;
 }
 
 img {
