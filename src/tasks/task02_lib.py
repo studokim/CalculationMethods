@@ -1,4 +1,4 @@
-from src.tasks.task01_lib import compute_cond_v, k_bad_cond, compute_diff
+from src.tasks.task01_lib import calc_cond_v, k_bad_cond, calc_diff
 import numpy as np
 
 
@@ -39,7 +39,7 @@ def solve(A: np.array, b: np.array):
 
 
 def print_diff(X: np.array, X_: np.array, title_1: str = "решение", title_2: str = "решение матпакета"):
-    diff = compute_diff(X, X_)
+    diff = calc_diff(X, X_)
     print(f"X  = {format_vector(X)} — {title_1}")
     print(f"X_ = {format_vector(X_)} — {title_2}")
     print(f"|X - X_| = {diff}")
@@ -78,8 +78,8 @@ def solve_regularizing(A: np.array, b: np.array, x0: np.array = None, verbosity=
         alpha = 10**i
         A_, b_ = build_regularization(A, b, alpha, x0)
         x_ = np.dot(np.linalg.inv(A_), b_)
-        cond = compute_cond_v(A_)
-        error = compute_norm(A, b, x_, alpha)
+        cond = calc_cond_v(A_)
+        error = calc_norm(A, b, x_, alpha)
         if verbosity >= 2:
             print("При alpha={0}: cond={1:16}, погрешность={2:16}"
                   .format(*map(format_float, [alpha, cond, error])))
@@ -92,5 +92,5 @@ def solve_regularizing(A: np.array, b: np.array, x0: np.array = None, verbosity=
     return best_x
 
 
-def compute_norm(A: np.array, b: np.array, x: np.array, alpha: float):
+def calc_norm(A: np.array, b: np.array, x: np.array, alpha: float):
     return np.linalg.norm(A * x - b)**2 + alpha * np.linalg.norm(x)**2

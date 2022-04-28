@@ -12,25 +12,25 @@ def print_cond(cond: float, name: str = "???"):
         print(f"{name:7} cond = {cond}")
 
 
-def compute_diff(X: np.array, X_: np.array):
+def calc_diff(X: np.array, X_: np.array):
     return np.linalg.norm(X - X_)
 
 
 def print_diff(X: np.array, X_: np.array, delta: float):
-    diff = compute_diff(X, X_)
+    diff = calc_diff(X, X_)
     print(f"X  = {X} исходный")
     print(f"X_ = {X_} после вариации на {delta}")
     print(f"|X - X_| = {diff}")
 
 
 # спектральный критерий обусловленности
-def compute_cond_s(A: np.array):
+def calc_cond_s(A: np.array):
     cond = np.linalg.norm(A) * np.linalg.norm(np.linalg.inv(A))
     return cond
 
 
 # объёмный критерий обусловленности
-def compute_cond_v(A: np.array):
+def calc_cond_v(A: np.array):
     cond = 1
     for row in A:
         sum = 0
@@ -42,7 +42,7 @@ def compute_cond_v(A: np.array):
 
 
 # угловой критерий обусловленности
-def compute_cond_a(A: np.array):
+def calc_cond_a(A: np.array):
     cond = 0
     A_inv = np.linalg.inv(A)
     A_inv = np.transpose(A_inv)

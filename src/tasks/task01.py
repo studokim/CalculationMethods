@@ -20,9 +20,9 @@ def calc_answer(params: dict):
     A = np.array(params['A'])
     b = np.array(params['b'])
     delta = float(params['delta'])
-    cond_s = compute_cond_s(A)
-    cond_v = compute_cond_v(A)
-    cond_a = compute_cond_a(A)
+    cond_s = calc_cond_s(A)
+    cond_v = calc_cond_v(A)
+    cond_a = calc_cond_a(A)
     A_ = build_variated(A, delta)
     X = np.linalg.solve(A, b)
     X_ = np.linalg.solve(A_, b)
@@ -34,15 +34,15 @@ def calc_answer(params: dict):
         "δ": delta,
         "X": X.tolist(),
         "X после вариации": X_.tolist(),
-        "|X - X_var|": compute_diff(X, X_),
+        "|X - X_var|": calc_diff(X, X_),
     }
     return json.dumps(answer, ensure_ascii=False)
 
 
 def print_answer(A: np.array, b: np.array):
-    print_cond(compute_cond_s(A), "spectre")
-    print_cond(compute_cond_v(A), "volume")
-    print_cond(compute_cond_a(A), "angle")
+    print_cond(calc_cond_s(A), "spectre")
+    print_cond(calc_cond_v(A), "volume")
+    print_cond(calc_cond_a(A), "angle")
     X = np.linalg.solve(A, b)
     delta = 10**(-4)
     A_ = build_variated(A, delta)

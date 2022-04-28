@@ -1,7 +1,7 @@
 import json
 from src.tasks.common_lib import *
 from src.tasks.common_data import SOLE
-from src.tasks.task01_lib import compute_cond_s, print_cond
+from src.tasks.task01_lib import calc_cond_s, print_cond
 from src.tasks.task02_lib import *
 
 
@@ -29,7 +29,7 @@ def calc_answer(params: dict):
     A = np.array(params['A'])
     b = np.array(params['b'])
     L, U = build_LU(A)
-    cond = compute_cond_s(A)
+    cond = calc_cond_s(A)
     X = solve(A, b)
     X_bib = np.linalg.solve(A, b)
     X_ = None
@@ -40,18 +40,18 @@ def calc_answer(params: dict):
         X_ = solve_regularizing(A, b)
         X0 = build_random_vector(len(A))
         X_test = solve_regularizing(A, b, X0)
-        diff_regularized = compute_diff(X_, X_test)
+        diff_regularized = calc_diff(X_, X_test)
         X_ = X_.tolist()
         X0 = X0.tolist()
         X_test = X_test.tolist()
     answer = {
         "Число обусловленности матрицы A": cond,
-        "Число обусловленности матрицы L": compute_cond_s(L),
-        "Число обусловленности матрицы U": compute_cond_s(U),
+        "Число обусловленности матрицы L": calc_cond_s(L),
+        "Число обусловленности матрицы U": calc_cond_s(U),
         "Задача плохо обусловлена?": int(cond > k_bad_cond),
         "X, полученный библиотечной функцией": X_bib.tolist(),
         "X": X.tolist(),
-        "|X - X_bib|": compute_diff(X, X_bib),
+        "|X - X_bib|": calc_diff(X, X_bib),
         "X, полученный методом регуляризации": X_,
         "X0": X0,
         "X проверочный": X_test,
@@ -62,10 +62,10 @@ def calc_answer(params: dict):
 
 def print_answer(A: np.array, b: np.array):
     L, U = build_LU(A)
-    cond = compute_cond_s(A)
+    cond = calc_cond_s(A)
     print_cond(cond, "A:")
-    print_cond(compute_cond_s(L), "L:")
-    print_cond(compute_cond_s(U), "U:")
+    print_cond(calc_cond_s(L), "L:")
+    print_cond(calc_cond_s(U), "U:")
     x = solve(A, b)
     x_bib = np.linalg.solve(A, b)
     print_diff(x, x_bib)
