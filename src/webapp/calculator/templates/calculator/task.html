@@ -4,8 +4,8 @@
     <title>Calculator</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'calculator/style.css' %}">
-    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="{% static 'calculator/googleapis/ibmplexsans/IBMPlexSans300.css' %}" rel="stylesheet">
+    <script src="{% static 'calculator/googleapis/ajax/jquery.min.js' %}"></script>
 </head>
 
 <body>
@@ -32,6 +32,7 @@
                     data: form.serialize(),
                     success: function (response) {
                         var params = JSON.stringify(response);
+                        $("#answer").html("<p>Вычисляем…</p>");
                         $.ajax({
                             type: "POST",
                             url: "./{{task_id}}/rendered_params",
