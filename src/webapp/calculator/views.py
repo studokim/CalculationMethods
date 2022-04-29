@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
 
 from src.tasks.common_tasks import *
+from src.tasks.common_lib import is_base64
 from .forms import get_form_by_number, get_params_by_number
 
 
@@ -53,6 +54,7 @@ def answer(request: HttpRequest, task_id):
 
 def rendered_answer(request, task_id):
     context = {
-        'answer': json.loads(request.body).items()
+        'answer': filter(lambda pair: not is_base64(pair[1]), json.loads(request.body).items()),
+        'answer_base64': filter(lambda pair: is_base64(pair[1]), json.loads(request.body).items()),
     }
     return render(request, f'calculator/answer.html', context)

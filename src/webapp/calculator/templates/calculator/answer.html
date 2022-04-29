@@ -6,5 +6,13 @@
             <td>{{value}}</td>
         </tr>
         {% endfor %}
+        {% for key, value in answer_base64 %}
+        <tr>
+            <td>{{key}}</td>
+            <td>
+                <img src="data:image/png;base64, {{value|safe}}" alt="График">
+            </td>
+        </tr>
+        {% endfor %}
     </tbody>
 </table>
