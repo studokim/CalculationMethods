@@ -2,15 +2,14 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest
 
-from src.tasks import common_data
-from src.tasks.main import get_task_by_number
+from src.tasks.common_tasks import *
 from .forms import get_form_by_number, get_params_by_number
 
 
 def index(request):
     context = {
-        'solved_tasks': common_data.get_solved_tasks().items(),
-        'unsolved_tasks': common_data.get_unsolved_tasks().items(),
+        'solved_tasks': get_solved_tasks().items(),
+        'unsolved_tasks': get_unsolved_tasks().items(),
     }
     return render(request, 'calculator/index.html', context)
 

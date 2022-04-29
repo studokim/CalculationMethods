@@ -1,20 +1,6 @@
 #!/usr/bin/env python
 import argparse
-import src.tasks.task01 as task01
-import src.tasks.task02 as task02
-import src.tasks.task04 as task04
-
-
-def get_task_by_number(n: int):
-    match n:
-        case 1:
-            return task01
-        case 2:
-            return task02
-        case 4:
-            return task04
-        case _:
-            return None
+from src.tasks.common_tasks import get_task_by_number
 
 
 def main():
