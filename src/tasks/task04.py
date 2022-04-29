@@ -29,56 +29,63 @@ def calc_answer(params: dict):
     epsilon = float(params['epsilon'])
     output = {}
     X = solve_simple(A, b, epsilon, output=output)
+    X_seidel = solve_seidel(A, b, epsilon, output=output)
     X_ = np.linalg.solve(A, b)
-    diff = calc_diff(X, X_)
     answer = {
         # NaNs are unexpected characters when dumping to json
-        "X": str(X.tolist()),
-        "X, полученный библиотечной функцией": str(X_.tolist()),
-        "|X - X_bib|": str(diff),
+        "X, полученный методом простой итерации": str(X),
+        "X, полученный методом Зейделя": str(X_seidel),
+        "X, полученный библиотечной функцией": str(X_),
+        "|X - X_bib|": str(calc_diff(X, X_)),
+        "|X_seidel - X_bib|": str(calc_diff(X_seidel, X_)),
     }
     answer.update(output)
     return json.dumps(answer, ensure_ascii=False)
 
 
 def print_answer(A: np.array, b: np.array):
-    epsilon = 10**(-10)
+    epsilon = 10**(-4)
     X = solve_simple(A, b, epsilon, verbosity=1)
     X_ = np.linalg.solve(A, b)
-    X_relax = solve_relax(
-        A, b, epsilon, [0.0 for i in range(len(A))], verbosity=1)
+    X_seidel = solve_seidel(
+        A, b, epsilon, [0.0 for i in range(len(A))])
     print_diff(X, X_)
 
 
 def main():
     print_task(4)
 
-    print_test("Из 0, 1, 2")
-    A = np.array([[3.0, 1.0], [2.0, 3.0]])
-    b = np.array([1.0, 1.0])
+    print_test("Из machinelearning")
+    A = np.array([[1.0, 1.0], [1.0, 3.0]])
+    b = np.array([3.0, 7.0])
     print_answer(A, b)
 
-    print_test("Гильберта 2-го порядка")
-    A, b = SOLE.hilbert(2)
-    print_answer(A, b)
+    # print_test("Из 0..3")
+    # A = np.array([[3.0, 1.0], [2.0, 3.0]])
+    # b = np.array([1.0, 1.0])
+    # print_answer(A, b)
 
-    print_test("Гильберта 3-го порядка")
-    A, b = SOLE.hilbert(3)
-    print_answer(A, b)
+    # print_test("Гильберта 2-го порядка")
+    # A, b = SOLE.hilbert(2)
+    # print_answer(A, b)
 
-    print_test("Гильберта 10-го порядка")
-    A, b = SOLE.hilbert(10)
-    print_answer(A, b)
+    # print_test("Гильберта 3-го порядка")
+    # A, b = SOLE.hilbert(3)
+    # print_answer(A, b)
 
-    # матрица из Пакулиной, стр. 90, вар. 1
-    print_test()
-    A, b = SOLE.pakulina(2)
-    print_answer(A, b)
+    # print_test("Гильберта 10-го порядка")
+    # A, b = SOLE.hilbert(10)
+    # print_answer(A, b)
 
-    # матрица из Пакулиной, стр. 94, вар. 1
-    print_test()
-    A, b = SOLE.pakulina(3)
-    print_answer(A, b)
+    # # матрица из Пакулиной, стр. 90, вар. 1
+    # print_test()
+    # A, b = SOLE.pakulina(2)
+    # print_answer(A, b)
+
+    # # матрица из Пакулиной, стр. 94, вар. 1
+    # print_test()
+    # A, b = SOLE.pakulina(3)
+    # print_answer(A, b)
 
 
 if __name__ == '__main__':

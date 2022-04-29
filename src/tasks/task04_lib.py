@@ -46,18 +46,19 @@ def solve_simple(A: np.array, b: np.array, epsilon: float, x0: np.array = None, 
         error = calc_aposterior(alpha, x_k, x_k_minus_1)
         iter += 1
     if any(np.isnan(x_k)):
-        comment = f"Невозможно найти решение; ‖alpha‖ = {np.linalg.norm(alpha)}"
+        comment = f"МПИ: Невозможно найти решение; ‖alpha‖ = {np.linalg.norm(alpha)}"
     else:
-        comment = f"Решение найдено для ε = {epsilon} за {iter} итераций. " + \
+        comment = f"МПИ: Решение найдено для ε = {epsilon} за {iter} итераций. " + \
             f"Апостериорная погрешность = {error}"
     if verbosity >= 1:
         print(comment)
     else:
-        output.update({"Количество итераций": iter, "comment": comment})
+        output.update(
+            {"Количество итераций в методе простой итерации": iter, "comment": comment})
     return x_k
 
 
-# everywhere below:
+# in the solve_relax:
 # i         — row number in A
 # n         — row number in x; often equals to i
 # x_U_k     — x^k
@@ -139,3 +140,33 @@ def solve_relax(A: np.array, b: np.array, epsilon: float, x_U_0: np.array = None
             break
     print(f"x^k={x_U_k}")
     return x_U_k
+
+
+def solve_seidel(A: np.array, b: np.array, epsilon: float, x_U_0: np.array = None, output: dict = None) -> tuple[np.array, str]:
+    if x_U_0 is None:
+        x_U_0 = build_beta(A, b)
+    iter = 1
+    x_U_k_minus_1 = x_U_0
+    x_U_k = build_x_U_k_seidel(A, b, x_U_k_minus_1)
+    while (calc_diff(x_U_k, x_U_k_minus_1) > epsilon):
+        iter += 1
+        x_U_k_minus_1 = x_U_k
+        x_U_k = build_x_U_k_seidel(A, b, x_U_k_minus_1)
+    output.update({"Количество итераций в методе Зейделя": iter})
+    return x_U_k
+
+
+def build_x_U_k_seidel(A: np.array, b: np.array, x_U_k_minus_1: np.array) -> tuple[np.array, str]:
+    x_U_k = [0 for i in range(len(A))]
+    for i in range(len(A)):
+        s1 = 0
+        s2 = 0
+        for j in range(i):
+            c = - A[i][j] / A[i][i]
+            s1 += c * x_U_k[j]
+        for j in range(i+1, len(A)):
+            c = - A[i][j] / A[i][i]
+            s2 += c * x_U_k_minus_1[j]
+        x_i_U_k = s1 + s2 + b[i] / A[i][i]
+        x_U_k[i] = x_i_U_k
+    return np.array(x_U_k)
