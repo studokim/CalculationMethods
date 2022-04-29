@@ -26,6 +26,9 @@
             $("#formx").submit(function (e) {
                 e.preventDefault(); // avoid executing the actual submit of the form.
                 var form = $(this);
+                if (!validate_float_list()) {
+                    return;
+                }
                 $.ajax({
                     type: "POST",
                     url: form.attr('action'),
@@ -70,8 +73,23 @@
                         $("#params").html("<p>Не удалось считать параметры.</p>");
                     }
                 });
-
             });
+
+            function validate_float_list() {
+                var objects = document.getElementsByClassName("float-list");
+                var re = /^(\ *,?\ *[0-9]+\.?[0-9]*)+$/;
+                var ok = true;
+                Array.from(objects).forEach(obj => {
+                    if (re.test(obj.value)) {
+                        obj.removeAttribute("style");
+                    }
+                    else {
+                        obj.style.border = "red solid 3px";
+                        ok = false;
+                    }
+                });
+                return ok;
+            }
         </script>
         {% endblock javascript %}
         <div id="params"></div>
