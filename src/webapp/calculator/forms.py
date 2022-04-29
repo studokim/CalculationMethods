@@ -9,6 +9,8 @@ def get_form_by_number(task_id: int):
             return Task01Form
         case 2:
             return Task02Form
+        case 3:
+            return Task03Form
         case 4:
             return Task04Form
         case 5:
@@ -30,6 +32,11 @@ def get_params_by_number(task_id: int, form: forms.Form):
                 'delta': form.data['delta']
             }
         case 2:
+            return {
+                'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
+                'b': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[1].tolist(),
+            }
+        case 3:
             return {
                 'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
                 'b': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[1].tolist(),
@@ -68,6 +75,11 @@ class Task01Form(forms.Form):
 
 
 class Task02Form(forms.Form):
+    sole_name = forms.ChoiceField(label='Выберите СЛАУ для исследования:',
+                                  choices=common_data.SOLE.get_available_matrices_names())
+
+
+class Task03Form(forms.Form):
     sole_name = forms.ChoiceField(label='Выберите СЛАУ для исследования:',
                                   choices=common_data.SOLE.get_available_matrices_names())
 
