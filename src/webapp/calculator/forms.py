@@ -15,6 +15,8 @@ def get_form_by_number(task_id: int):
             return Task05Form
         case 6:
             return Task06Form
+        case 7:
+            return Task06Form
         case _:
             return None
 
@@ -45,6 +47,11 @@ def get_params_by_number(task_id: int, form: forms.Form):
                 'epsilon': form.data['epsilon']
             }
         case 6:
+            return {
+                'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
+                'epsilon': form.data['epsilon']
+            }
+        case 7:
             return {
                 'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
                 'epsilon': form.data['epsilon']
@@ -82,6 +89,13 @@ class Task05Form(forms.Form):
 
 
 class Task06Form(forms.Form):
+    sole_name = forms.ChoiceField(label='Выберите матрицу для исследования:',
+                                  choices=common_data.SOLE.get_available_matrices_names())
+    epsilon = forms.FloatField(
+        label='Введите ε', min_value=0.00001, max_value=0.01, initial=0.001)
+
+
+class Task07Form(forms.Form):
     sole_name = forms.ChoiceField(label='Выберите матрицу для исследования:',
                                   choices=common_data.SOLE.get_available_matrices_names())
     epsilon = forms.FloatField(
