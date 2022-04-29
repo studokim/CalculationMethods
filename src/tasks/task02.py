@@ -46,6 +46,9 @@ def calc_answer(params: dict):
         X_test = X_test.tolist()
     answer = {
         "Число обусловленности матрицы A": cond,
+        "Число обусловленности матрицы A": cond,
+        "Матрица L": str(L),
+        "Матрица U": str(U),
         "Число обусловленности матрицы L": calc_cond_s(L),
         "Число обусловленности матрицы U": calc_cond_s(U),
         "Задача плохо обусловлена?": int(cond > k_bad_cond),

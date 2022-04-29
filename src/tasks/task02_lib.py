@@ -23,13 +23,13 @@ def solve(A: np.array, b: np.array):
     L, U = build_LU(A)
 
     # прямая подстановка
-    y = [0 for i in range(n)]
+    y = [0.0 for i in range(n)]
     y[0] = b[0]
     for i in range(1, n):
         y[i] = b[i] - sum([L[i][j] * y[j] for j in range(0, i)])
 
     # обратная подстановка
-    x = np.array([0 for i in range(n)])
+    x = np.array([0.0 for i in range(n)])
     x[n-1] = y[n-1] / U[n-1][n-1]
     for i in range(n-2, -1, -1):
         x[i] = (y[i] - sum([U[i][j] * x[j]
