@@ -13,6 +13,8 @@ def get_form_by_number(task_id: int):
             return Task04Form
         case 5:
             return Task05Form
+        case 6:
+            return Task06Form
         case _:
             return None
 
@@ -40,6 +42,11 @@ def get_params_by_number(task_id: int, form: forms.Form):
             return {
                 'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
                 'x_0': form.data['x_0'].split(','),
+                'epsilon': form.data['epsilon']
+            }
+        case 6:
+            return {
+                'A': common_data.SOLE.get_SOLE_by_name(form.data['sole_name'])[0].tolist(),
                 'epsilon': form.data['epsilon']
             }
         case _:
@@ -70,5 +77,12 @@ class Task05Form(forms.Form):
                                   choices=common_data.SOLE.get_available_matrices_names())
     x_0 = forms.CharField(
         label='Введите начальное приближение. Обратите внимание на длину вектора!', initial='0,1.25,555,4.4', widget=forms.TextInput(attrs={'class': 'float-list'}))
+    epsilon = forms.FloatField(
+        label='Введите ε', min_value=0.00001, max_value=0.01, initial=0.001)
+
+
+class Task06Form(forms.Form):
+    sole_name = forms.ChoiceField(label='Выберите матрицу для исследования:',
+                                  choices=common_data.SOLE.get_available_matrices_names())
     epsilon = forms.FloatField(
         label='Введите ε', min_value=0.00001, max_value=0.01, initial=0.001)
