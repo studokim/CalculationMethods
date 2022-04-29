@@ -69,6 +69,6 @@ class Task05Form(forms.Form):
     sole_name = forms.ChoiceField(label='Выберите матрицу для исследования:',
                                   choices=common_data.SOLE.get_available_matrices_names())
     x_0 = forms.CharField(
-        label='Введите начальное приближение', initial='0,1.25,555,4.4', widget=forms.TextInput(attrs={'class': 'float-list'}))
+        label='Введите начальное приближение. Обратите внимание на длину вектора!', initial='0,1.25,555,4.4', widget=forms.TextInput(attrs={'class': 'float-list'}))
     epsilon = forms.FloatField(
         label='Введите ε', min_value=0.00001, max_value=0.01, initial=0.001)
