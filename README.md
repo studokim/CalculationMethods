@@ -18,7 +18,7 @@ git clone https://github.com/studokim/CalculationMethods.git
 cd CalculationMethods
 python -m venv venv
 source ./venv/bin/activate
-pip install django numpy
+pip install django numpy scipy matplotlib
 pip install -e .
 ```
 

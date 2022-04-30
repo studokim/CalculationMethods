@@ -75,9 +75,10 @@ class SDE:
 
     def get_available_names() -> dict:
         return [
-            ("first", "Вариант 1"),
-            ("second", "Вариант 2"),
-            ("third", "Вариант 3"),
+            ("first", "Вариант с log"),
+            ("second", "Вариант с cos"),
+            ("third", "Вариант с sin"),
+            ("fourth", "Вариант с exp"),
         ]
 
     # Test data consists of: [str_functions, functions, conditions, interval]
@@ -110,7 +111,7 @@ class SDE:
                 "1 + cos(x) / 2", "1 - x / 3"
             ],
             [
-                lambda x: -(6 + x) / (7 + 3 * x), lambda x: -(1 - x/2),
+                lambda x: -(6 + x) / (7 + 3 * x), lambda x: -(1 - x / 2),
                 lambda x: 1 + math.cos(x) / 2, lambda x: 1 - x / 3
             ],
             [-2, 1, 0, 1, 0, 0],
@@ -126,6 +127,20 @@ class SDE:
             [
                 lambda x: -(5 - x) / (7 - 3 * x), lambda x: -(1 - x) / 2,
                 lambda x: 1 + math.sin(x) / 2, lambda x: 1 / 2 + x / 2
+            ],
+            [0, 1, 3, 2, 0, 0],
+            [-1, 1]
+        )
+
+    def fourth():
+        return (
+            [
+                "-(4 + x) / (5 + 2 * x)", "x / 2 - 1",
+                "1 + math.exp(x / 2)", "2 + x"
+            ],
+            [
+                lambda x: -(4 + x) / (5 + 2 * x), lambda x: x / 2 - 1,
+                lambda x: 1 + math.exp(x / 2), lambda x: 2 + x
             ],
             [0, 1, 3, 2, 0, 0],
             [-1, 1]

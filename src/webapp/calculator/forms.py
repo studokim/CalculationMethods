@@ -19,6 +19,8 @@ def get_form_by_number(task_id: int):
             return Task06Form
         case 7:
             return Task07Form
+        case 8:
+            return Task08Form
         case _:
             return None
 
@@ -65,6 +67,12 @@ def get_params_by_number(task_id: int, form: forms.Form):
                 'conditions': str(common_data.SDE.get_by_name(form.data['name'])[2]),
                 'interval': str(common_data.SDE.get_by_name(form.data['name'])[3]),
                 'epsilon': form.data['epsilon']
+            }
+        case 8:
+            return {
+                'name': form.data['name'],
+                'str_functions': common_data.SDE.get_by_name(form.data['name'])[0],
+                'interval': str(common_data.SDE.get_by_name(form.data['name'])[3]),
             }
         case _:
             return None
@@ -115,3 +123,8 @@ class Task07Form(forms.Form):
                              choices=common_data.SDE.get_available_names())
     epsilon = forms.FloatField(
         label='Введите ε', min_value=0.00001, max_value=0.1, initial=0.001)
+
+
+class Task08Form(forms.Form):
+    name = forms.ChoiceField(label='Выберите систему для исследования:',
+                             choices=common_data.SDE.get_available_names())
