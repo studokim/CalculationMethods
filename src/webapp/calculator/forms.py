@@ -1,3 +1,4 @@
+from email.policy import default
 from django import forms
 
 from src.tasks import common_data
@@ -21,6 +22,8 @@ def get_form_by_number(task_id: int):
             return Task07Form
         case 8:
             return Task08Form
+        case 10:
+            return Task10Form
         case _:
             return None
 
@@ -73,6 +76,11 @@ def get_params_by_number(task_id: int, form: forms.Form):
                 'name': form.data['name'],
                 'str_functions': common_data.SDE.get_by_name(form.data['name'])[0],
                 'interval': str(common_data.SDE.get_by_name(form.data['name'])[3]),
+            }
+        case 10:
+            return {
+                'name': form.data['name'],
+                'explicit': False or form.data['explicit'],
             }
         case _:
             return None
@@ -128,3 +136,10 @@ class Task07Form(forms.Form):
 class Task08Form(forms.Form):
     name = forms.ChoiceField(label='Выберите систему для исследования:',
                              choices=common_data.SDE.get_available_names())
+
+
+class Task10Form(forms.Form):
+    name = forms.ChoiceField(label='Выберите задачу для исследования:',
+                             choices=common_data.Heat.get_available_names())
+    explicit = forms.ChoiceField(
+        label='Решаем по явной схеме?:', choices=[(True, "Да"), (False, "Нет")])
