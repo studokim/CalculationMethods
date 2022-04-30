@@ -1,4 +1,6 @@
 import numpy as np
+from matplotlib import pyplot as plt
+from src.tasks.common_data import SDE
 
 
 def calc_coeffs(data_from, step):
@@ -23,43 +25,6 @@ def calc_coeffs(data_from, step):
     return A, B, C, D
 
 
-# Test data element: [functions, conds, element]
-
-# functions = [k, p, q, f]
-# cond = [alpha_0, alpha_1, beta_0, beta_1, Ac, Bc]
-# segment = [a,b]
-
-# alpha_0 * u(a) + alpha_1 * du(a) = Ac
-#  beta_0 * u(b) +  beta_1 * du(b) = B
-def get_test_data():
-    test_data = []
-    segment = [-1, 1]
-
-    test_data.append([
-        [
-            lambda x: -(4 - x) / (5 - 2 * x), lambda x: (1 - x) / 2,
-            lambda x: math.log(3 + x) / 2, lambda x: 1 + x / 3],
-        [1, 0, 1, 0, 0, 0],
-        segment
-    ])
-    test_data.append([
-        [
-            lambda x: -(6 + x) / (7 + 3 * x), lambda x: -(1 - x/2),
-            lambda x: 1 + math.cos(x) / 2, lambda x: 1 - x / 3],
-        [-2, 1, 0, 1, 0, 0],
-        segment
-    ])
-    test_data.append([
-        [
-            lambda x: -(5 - x) / (7 - 3 * x), lambda x: -(1 - x) / 2,
-            lambda x: 1 + math.sin(x) / 2, lambda x: 1 / 2 + x / 2],
-        [0, 1, 3, 2, 0, 0],
-        segment
-    ])
-
-    return test_data
-
-
 def solve(coeffs):
     [A, B, C, D] = coeffs
     [s, t, u] = [[-C[0]/B[0]], [D[0]/B[0]], [0]]
@@ -74,59 +39,37 @@ def solve(coeffs):
     return u
 
 
-def grid(data_from, step, eps):
+def grid(data_from, step, epsilon):
     coeff = 2
     k = 0
     p = 1
-    v2 = solve(calc_coeffs(data_from, step))
+    u_k_plus_1 = solve(calc_coeffs(data_from, step))
     while True:
         k += 1
-        v1 = v2.copy()
-        v2 = solve(calc_coeffs(data_from, step/coeff ** k))
+        u_k = u_k_plus_1.copy()
+        u_k_plus_1 = solve(calc_coeffs(data_from, step/coeff ** k))
         errors = []
-        for i in range(len(v1)):
-            errors.append((v2[2 * i] - v1[i]) / (coeff ** p - 1))
-        if norm(np.array(errors), 2) < eps:
+        for i in range(len(u_k)):
+            errors.append((u_k_plus_1[2 * i] - u_k[i]) / (coeff ** p - 1))
+        if np.linalg.norm(np.array(errors), 2) < epsilon:
             for i in range(len(errors)):
                 if i % 2 == 0:
-                    v2[2 * i] += errors[i]
+                    u_k_plus_1[2 * i] += errors[i]
                 else:
-                    v2[i] += (errors[i - 1] + errors[i + 1]) / 2
+                    u_k_plus_1[i] += (errors[i - 1] + errors[i + 1]) / 2
             x = []
             a = data_from[2][0]
-            for i in range(len(v2)):
+            for i in range(len(u_k_plus_1)):
                 x.append(a + i * step / (coeff ** k))
-            title = f"Eps: {eps}, Grid step: {step / coeff ** k}, Thickening steps: {k}"
-            return x, v2, title
+            title = f"Шаг сетки: {step / coeff ** k}, Количество шагов сгущения: {k}"
+            return x, u_k_plus_1, title
 
 
-def draw(tuples):
-    figure, axis = plt.subplots(2, 2, figsize=(16, 8))
-
-    [i, j] = [0, 0]
-
-    def set_cur_grid():
-        [xs, ys, title] = tuples[2 * i + j]
-        axis[i, j].plot(xs, ys, color='orange', label="Errors", linewidth=0.5)
-        axis[i, j].set_title(title)
-        axis[i, j].legend()
-
-    set_cur_grid()
-    j += 1
-
-    set_cur_grid()
-    [i, j] = [1, 0]
-
-    set_cur_grid()
-    j += 1
-    set_cur_grid()
-
-    figure.tight_layout()
-    plt.show()
-
-
-def process_test(data_from):
-    graphs = []
-    for i in range(1, 5):
-        graphs.append(grid(data_from, step=0.125, eps=10 ** -i))
-    draw(graphs)
+def draw(name, epsilon):
+    data_from = SDE.get_by_name(name)[1:]
+    [xs, ys, title] = grid(data_from, step=0.125, epsilon=epsilon)
+    plt.plot(xs, ys, color='blue', linewidth=0.5)
+    plt.xlabel('x')
+    plt.ylabel('Погрешность')
+    plt.tight_layout()
+    return title

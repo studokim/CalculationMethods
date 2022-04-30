@@ -1,15 +1,16 @@
 import numpy as np
+import math
 from src.tasks.task01_lib import build_hilbert
 
 
 class SOLE:
-    def get_SOLE_by_name(name: str) -> callable:
+    def get_by_name(name: str) -> callable:
         method_name = name.split("_")[0]
         n = int(name.split("_")[1])
         method = getattr(SOLE, method_name)
         return method(n)
 
-    def get_available_matrices_names() -> dict:
+    def get_available_names() -> dict:
         return [
             ("hilbert_2", "Гильберта порядка 2"),
             ("hilbert_3", "Гильберта порядка 3"),
@@ -65,3 +66,67 @@ class SOLE:
             case _:
                 raise
         return A, b
+
+
+class SDE:
+    def get_by_name(method_name: str) -> callable:
+        method = getattr(SDE, method_name)
+        return method()
+
+    def get_available_names() -> dict:
+        return [
+            ("first", "Вариант 1"),
+            ("second", "Вариант 2"),
+            ("third", "Вариант 3"),
+        ]
+
+    # Test data consists of: [str_functions, functions, conditions, interval]
+    #
+    # functions = [k, p, q, f]
+    # conditions = [alpha_0, alpha_1, beta_0, beta_1, Ac, Bc]
+    # interval = [a,b]
+    #
+    # alpha_0 * u(a) + alpha_1 * du(a) = Ac
+    # beta_0 * u(b) +  beta_1 * du(b) = B
+
+    def first():
+        return (
+            [
+                "-(4 - x) / (5 - 2 * x)", "(1 - x) / 2",
+                "log(3 + x) / 2", "1 + x / 3"
+            ],
+            [
+                lambda x: -(4 - x) / (5 - 2 * x), lambda x: (1 - x) / 2,
+                lambda x: math.log(3 + x) / 2, lambda x: 1 + x / 3
+            ],
+            [1, 0, 1, 0, 0, 0],
+            [-1, 1]
+        )
+
+    def second():
+        return (
+            [
+                "-(6 + x) / (7 + 3 * x)", "-(1 - x/2)",
+                "1 + cos(x) / 2", "1 - x / 3"
+            ],
+            [
+                lambda x: -(6 + x) / (7 + 3 * x), lambda x: -(1 - x/2),
+                lambda x: 1 + math.cos(x) / 2, lambda x: 1 - x / 3
+            ],
+            [-2, 1, 0, 1, 0, 0],
+            [-1, 1]
+        )
+
+    def third():
+        return (
+            [
+                "-(5 - x) / (7 - 3 * x)", "-(1 - x) / 2",
+                "1 + sin(x) / 2", "1 / 2 + x / 2"
+            ],
+            [
+                lambda x: -(5 - x) / (7 - 3 * x), lambda x: -(1 - x) / 2,
+                lambda x: 1 + math.sin(x) / 2, lambda x: 1 / 2 + x / 2
+            ],
+            [0, 1, 3, 2, 0, 0],
+            [-1, 1]
+        )
