@@ -53,6 +53,6 @@ def draw(name, test_case):
     [xs, ys, title] = get_graph_data(data_from, test_case)
     plt.plot(xs, ys, ".-", color='blue', linewidth=0.5)
     plt.xlabel('x')
-    plt.ylabel('Погрешность')
+    plt.ylabel('u(x)')
     plt.tight_layout()
     return title

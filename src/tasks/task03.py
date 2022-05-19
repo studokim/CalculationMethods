@@ -32,6 +32,8 @@ def calc_answer(params: dict):
         "X": X.tolist(),
         "X, полученный библиотечной функцией": X_bib.tolist(),
         "|X - X_bib|": diff,
+        "A * X": str(np.dot(A, X)),
+        "A * X_bib": str(np.dot(A, X_bib)),
     }
     return json.dumps(answer, ensure_ascii=False)
 

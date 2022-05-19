@@ -59,6 +59,9 @@ def calc_answer(params: dict):
         "X0": X0,
         "X проверочный": X_test,
         "|X_reg - X_prov|": diff_regularized,
+        "A * X": str(np.dot(A, X)),
+        "A * X_bib": str(np.dot(A, X_bib)),
+        "A * X_": str(np.dot(A, X_)),
     }
     return json.dumps(answer, ensure_ascii=False)
 

@@ -30,14 +30,16 @@ def calc_answer(params: dict):
     output = {}
     X = solve_simple(A, b, epsilon, output=output)
     X_seidel = solve_seidel(A, b, epsilon, output=output)
-    X_ = np.linalg.solve(A, b)
+    X_bib = np.linalg.solve(A, b)
     answer = {
         # NaNs are unexpected characters when dumping to json
         "X, полученный методом простой итерации": str(X),
         "X, полученный методом Зейделя": str(X_seidel),
-        "X, полученный библиотечной функцией": str(X_),
-        "|X - X_bib|": str(calc_diff(X, X_)),
-        "|X_seidel - X_bib|": str(calc_diff(X_seidel, X_)),
+        "X, полученный библиотечной функцией": str(X_bib),
+        "|X - X_bib|": str(calc_diff(X, X_bib)),
+        "|X_seidel - X_bib|": str(calc_diff(X_seidel, X_bib)),
+        "A * X": str(np.dot(A, X)),
+        "A * X_bib": str(np.dot(A, X_seidel)),
     }
     answer.update(output)
     return json.dumps(answer, ensure_ascii=False)

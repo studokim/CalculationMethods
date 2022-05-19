@@ -70,6 +70,6 @@ def draw(name, epsilon):
     [xs, ys, title] = grid(data_from, step=0.125, epsilon=epsilon)
     plt.plot(xs, ys, color='blue', linewidth=0.5)
     plt.xlabel('x')
-    plt.ylabel('Погрешность')
+    plt.ylabel('u(x)')
     plt.tight_layout()
     return title

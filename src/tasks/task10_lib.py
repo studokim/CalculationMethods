@@ -97,13 +97,13 @@ class Heat:
     def get_by_name(name: str, x, t) -> callable:
         n = int(name) - 1
         configs = []
-        kappas = [1e-3, 1e-2, 1e-1]
+        kappas = [1e-3, 1e-2, 1]
         for kappa in kappas:
             configs.append(TestConfig(x ** 2 / 4 + t ** 2 /
                                       4, (0, 10), 5, (0, 10), 5, kappa, x, t))
         for kappa in kappas:
             configs.append(TestConfig(x ** 2 / 4 + t ** 2 / 4,
-                                      (0, 10), 100, (0, 10), 100, kappa, x, t))
+                                      (0, 1), 10, (0, 1), 185, kappa, x, t))
         for kappa in kappas:
             configs.append(TestConfig(
                 t * x, (0, 10), 100, (0, 10), 100, kappa, x, t))
