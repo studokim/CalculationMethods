@@ -8,9 +8,15 @@ from .forms import get_form_by_number, get_params_by_number
 
 
 def index(request):
+    unsolved = get_unsolved_tasks()
+    first_key = list(get_unsolved_tasks().keys())[0]
+    first_value = unsolved.pop(first_key)
     context = {
         'solved_tasks': get_solved_tasks().items(),
-        'unsolved_tasks': get_unsolved_tasks().items(),
+        'unsolved_tasks': unsolved.items(),
+        'unsolved_tasks_first_key': first_key,
+        'unsolved_tasks_first_value': first_value,
+        'unsolved_range_rest': list(range(1, len(unsolved) + 1)),
     }
     return render(request, 'calculator/index.html', context)
 
