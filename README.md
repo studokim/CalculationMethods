@@ -32,3 +32,8 @@ python manage.py runserver <ip>:<port>
 ```
 
 Then navigate in browser to `http://<ip>:<port>/`.
+
+## Screenshots
+Index page: ![](screenshots/index.png)
+
+Task inspection page: ![](screenshots/task.png)
