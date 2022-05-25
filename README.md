@@ -34,6 +34,6 @@ python manage.py runserver <ip>:<port>
 Then navigate in browser to `http://<ip>:<port>/`.
 
 ## Screenshots
-Index page: ![](screenshots/index.png)
+Index page: ![](./docs/index.png)
 
-Task inspection page: ![](screenshots/task.png)
+Task inspection page: ![](./docs/task.png)
